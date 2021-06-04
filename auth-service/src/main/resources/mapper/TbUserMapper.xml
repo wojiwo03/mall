@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wojiwo.auth.mapper.TbUserMapper">
+
+    <resultMap id="BaseResultMap" type="com.wojiwo.auth.entity.TbUser">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="realname" column="realname" jdbcType="VARCHAR"/>
+        <result property="telephone" column="telephone" jdbcType="VARCHAR"/>
+        <result property="icon" column="icon" jdbcType="VARCHAR"/>
+        <result property="state" column="state" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,username,password,
+        realname,telephone,icon,
+        state
+    </sql>
+
+    <resultMap id="URResultMap" type="com.wojiwo.auth.entity.TbUser">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="realname" column="realname" jdbcType="VARCHAR"/>
+        <result property="telephone" column="telephone" jdbcType="VARCHAR"/>
+        <result property="icon" column="icon" jdbcType="VARCHAR"/>
+        <result property="state" column="state" jdbcType="INTEGER"/>
+        <collection property="tbRoleList" ofType="com.wojiwo.auth.entity.TbRole" javaType="java.util.List">
+            <id property="id" column="rid" jdbcType="INTEGER"/>
+            <result property="name" column="rname" jdbcType="VARCHAR"/>
+            <collection property="tbFunctionList" ofType="com.wojiwo.auth.entity.TbFunction" javaType="java.util.List">
+                <id property="id" column="fid" jdbcType="INTEGER"/>
+                <result property="name" column="fname" jdbcType="VARCHAR"/>
+                <result property="url" column="url" jdbcType="VARCHAR"/>
+                <result property="pid" column="pid" jdbcType="INTEGER"/>
+                <result property="icon" column="ficon" jdbcType="VARCHAR"/>
+                <result property="sort" column="sort" jdbcType="INTEGER"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <sql id="UR_Column_List">
+        u
+        .
+        id
+        ,username,password,realname,telephone,u.icon,state,r.id rid,r.name rname,f.id fid,f.name fname,url,pid,f.icon ficon,sort
+    </sql>
+
+    <select id="selectOneByUsername" resultMap="URResultMap">
+        select
+        <include refid="UR_Column_List"/>
+        from tb_user u left join tb_user_role ur on u.id = ur.user_id
+        left join tb_role r on r.id = ur.role_id
+        left join tb_role_fun rf on r.id = rf.role_id
+        left join tb_function f on rf.fun_id = f.id
+        <where>
+            r.id is not null
+            <if test="username != null and username != ''">
+                and username = #{username,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+</mapper>

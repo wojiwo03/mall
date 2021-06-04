@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+将JSON数组
+[
+{key:'颜色',values:['红','白']},
+{key:'运存',values:['8g','16g']},
+{key:'内存',values:['32g','64g']}
+]
+第一次 ====>
+[
+{颜色:'红'},
+{颜色:'白'}
+]
+第二次 ====>
+转换为
+[
+{颜色:'红',运存:'8g'},
+{颜色:'红',运存:'16g'},
+{颜色:'白',运存:'8g'},
+{颜色:'白',运存:'16g'},
+]
+第3次 ====>
+[
+{颜色:'红',运存:'8g',内存:'32g'},
+{颜色:'红',运存:'16g',内存:'32g'},
+{颜色:'红',运存:'8g',内存:'64g'},
+{颜色:'红',运存:'16g',内存:'64g'},
+{颜色:'白',运存:'8g',内存:'32g'},
+{颜色:'白',运存:'16g',内存:'32g'},
+{颜色:'白',运存:'8g',内存:'64g'},
+{颜色:'白',运存:'16g',内存:'64g'}
+]
+<script>
+    var array = [
+        {key: '颜色', values: ['红', '白']},
+        {key: '运存', values: ['8g', '16g']},
+        {key: '内存', values: ['32g', '64g']}
+    ];
+    //reduce可以对数组进行遍历，previousValue 上次遍历的值，
+    // currentValue 当前遍历的值，currentIndex是当前索引，初始值[{}]
+    let arr = array.reduce((previousValue, currentValue, currentIndex) => {
+        //定义零时数组
+        let result = [];
+        //遍历之前值previousValue的所有对象,以及当前的值，把上次的值和当前的值合并
+        previousValue.forEach(o => {
+            currentValue['values'].forEach(c => {
+                let obj = {};
+                Object.assign(obj, o); //将上次值中的o对象合并到obj中 o {b：1} --> obj{a:1,b:1}
+                obj[currentValue['key']] = c; //给对象添加 属性 = 值
+                result.push(obj);
+            });
+        });
+        // return 值 作为下次遍历的previousValue
+        return result;
+    }, [{}]);
+    console.log(JSON.stringify(arr));
+</script>
+</body>
+</html>

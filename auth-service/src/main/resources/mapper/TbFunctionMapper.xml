@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wojiwo.auth.mapper.TbFunctionMapper">
+
+    <resultMap id="BaseResultMap" type="com.wojiwo.auth.entity.TbFunction">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="url" column="url" jdbcType="VARCHAR"/>
+        <result property="pid" column="pid" jdbcType="INTEGER"/>
+        <result property="icon" column="icon" jdbcType="VARCHAR"/>
+        <result property="sort" column="sort" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,name,url,
+        pid,icon,sort
+    </sql>
+
+    <resultMap id="FRResultMap" type="com.wojiwo.auth.entity.TbFunction">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="url" column="url" jdbcType="VARCHAR"/>
+        <result property="pid" column="pid" jdbcType="INTEGER"/>
+        <result property="icon" column="icon" jdbcType="VARCHAR"/>
+        <result property="sort" column="sort" jdbcType="INTEGER"/>
+        <collection property="tbRoleList" ofType="com.wojiwo.auth.entity.TbRole" javaType="java.util.List">
+            <id property="id" column="rid" jdbcType="INTEGER"/>
+            <result property="name" column="rname" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
+    <sql id="FR_Column_List">
+        f.id
+        ,f.name,url,
+        pid,icon,sort,r.id rid,r.name rname
+    </sql>
+
+    <resultMap id="MenuResultMap" type="com.wojiwo.auth.entity.TbFunction">
+        <id property="id" column="f_id"></id>
+        <result property="name" column="f_name"></result>
+        <result property="icon" column="f_icon"></result>
+        <collection property="subFunctions" javaType="java.util.List" ofType="com.wojiwo.auth.entity.TbFunction">
+            <id property="id" column="c_id"></id>
+            <result property="name" column="c_name"></result>
+            <result property="icon" column="c_icon"></result>
+            <result property="url" column="c_url"></result>
+        </collection>
+    </resultMap>
+
+    <select id="selectFRAll" resultMap="BaseResultMap">
+        select
+        <include refid="FR_Column_List"/>
+        from tb_role r left join tb_role_fun rf on r.id = rf.role_id
+        left join tb_function f on rf.fun_id = f.id
+        where f.id is not null
+    </select>
+
+    <select id="selectAllByUserId" resultMap="BaseResultMap">
+        select
+             f.id
+             ,f.name,f.url,f.pid,f.icon,f.sort
+        from tb_function f
+                 left join tb_role_fun rf on f.id = rf.fun_id
+                 left join tb_role r on rf.role_id = r.id
+                 left join tb_user_role ur on ur.role_id = r.id
+                 left join tb_user u on ur.user_id = u.id
+        where u.id = #{userId,jdbcType=NUMERIC}
+    </select>
+
+    <select id="selectMenuByUserId" resultMap="MenuResultMap">
+        select
+               f.id f_id, f.name f_name, f.icon f_icon, c.id c_id, c.name c_name, c.url c_url, c.icon c_icon
+        from (select f.id, f.name, f.url, f.pid, f.icon, f.sort
+              from tb_function f
+                       left join tb_role_fun rf on f.id = rf.fun_id
+                       left join tb_role r on rf.role_id = r.id
+                       left join tb_user_role ur on ur.role_id = r.id
+                       left join tb_user u on ur.user_id = u.id
+              where u.id = #{userId,jdbcType=NUMERIC}
+                and f.pid = 1) f
+                 left join (select f.id, f.name, f.url, f.pid, f.icon, f.sort
+                            from tb_function f
+                                     left join tb_role_fun rf on f.id = rf.fun_id
+                                     left join tb_role r on rf.role_id = r.id
+                                     left join tb_user_role ur on ur.role_id = r.id
+                                     left join tb_user u on ur.user_id = u.id
+                            where u.id = #{userId,jdbcType=NUMERIC}
+                              and f.pid != 1) c on f.id = c.pid
+        ORDER BY f.sort, c.sort
+    </select>
+</mapper>

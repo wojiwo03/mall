@@ -1,0 +1,24 @@
+server:
+  port: 1003
+
+spring:
+  application:
+    name: goods-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/eshop?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: 123456
+
+mybatis-plus:
+  config-location: classpath:mybatis-config.xml
+  type-aliases-package: com.wojiwo.goods.entity
+  mapper-locations: classpath:mapper/*.xml
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    instanceId: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:1001/eureka/

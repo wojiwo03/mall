@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wojiwo.auth.mapper.TbRoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.wojiwo.auth.entity.TbRole">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,name
+    </sql>
+
+    <resultMap id="RoleFunResultMap" type="com.wojiwo.auth.entity.TbRole">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <collection property="tbFunctionList" ofType="com.wojiwo.auth.entity.TbFunction" javaType="java.util.List">
+            <id property="id" column="fid" jdbcType="INTEGER"/>
+            <result property="name" column="fname" jdbcType="VARCHAR"/>
+            <result property="url" column="url" jdbcType="VARCHAR"/>
+            <result property="pid" column="pid" jdbcType="INTEGER"/>
+            <result property="icon" column="icon" jdbcType="VARCHAR"/>
+            <result property="sort" column="sort" jdbcType="INTEGER"/>
+        </collection>
+    </resultMap>
+
+    <sql id="RF_Column_List">
+        r
+        .
+        id
+        ,r.name,f.id fid,f.name fname,url,
+        pid,icon,sort
+    </sql>
+
+    <select id="selectRFAll" resultMap="RoleFunResultMap">
+        select
+        <include refid="RF_Column_List"/>
+        from tb_role r left join tb_role_fun rf on r.id = rf.role_id
+        left join tb_function f on rf.fun_id = f.id
+        where r.id is not null
+    </select>
+</mapper>

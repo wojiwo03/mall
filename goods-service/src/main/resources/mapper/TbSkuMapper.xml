@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wojiwo.goods.mapper.TbSkuMapper">
+
+    <resultMap id="BaseResultMap" type="com.wojiwo.goods.entity.TbSku">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="spuId" column="spu_id" jdbcType="BIGINT"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="images" column="images" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="BIGINT"/>
+        <result property="indexes" column="indexes" jdbcType="VARCHAR"/>
+        <result property="ownSpec" column="own_spec" jdbcType="VARCHAR"/>
+        <result property="enable" column="enable" jdbcType="BOOLEAN"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdateTime" column="last_update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,spu_id,title,
+        images,price,indexes,
+        own_spec,enable,create_time,
+        last_update_time
+    </sql>
+
+    <resultMap id="LinkResultMap" type="com.wojiwo.goods.entity.TbSku">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="spuId" column="spu_id" jdbcType="BIGINT"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="images" column="images" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="BIGINT"/>
+        <result property="indexes" column="indexes" jdbcType="VARCHAR"/>
+        <result property="ownSpec" column="own_spec" jdbcType="VARCHAR"/>
+        <result property="enable" column="enable" jdbcType="BOOLEAN"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdateTime" column="last_update_time" jdbcType="TIMESTAMP"/>
+        <association property="tbStock" javaType="com.wojiwo.goods.entity.TbStock">
+            <result property="seckillStock" column="seckill_stock" jdbcType="INTEGER"/>
+            <result property="seckillTotal" column="seckill_total" jdbcType="INTEGER"/>
+            <result property="stock" column="stock" jdbcType="INTEGER"/>
+        </association>
+    </resultMap>
+
+    <sql id="Link_Column_List">
+        sku.id,sku.spu_id,sku.title,
+        sku.images,sku.price,sku.indexes,
+        sku.own_spec,sku.enable,sku.create_time,
+        sku.last_update_time,
+        s.seckill_stock, s.seckill_total, s.stock
+    </sql>
+
+    <select id="linkSelectBySpuId" resultMap="LinkResultMap">
+        select
+        <include refid="Link_Column_List"/>
+        from tb_sku sku
+        left join tb_stock s on sku.id = s.sku_id
+        where
+        sku.spu_id = #{spuId,jdbcType=NUMERIC}
+    </select>
+</mapper>

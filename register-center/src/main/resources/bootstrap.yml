@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: register-center
+  config:
+    import: optional:configserver:http://localhost:2222/
+  cloud:
+    config:
+      profile: default
+      label: master
+
+
