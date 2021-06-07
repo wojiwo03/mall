@@ -5,11 +5,11 @@
 <mapper namespace="com.wojiwo.goods.mapper.TbCategoryMapper">
 
     <resultMap id="BaseResultMap" type="com.wojiwo.goods.entity.TbCategory">
-        <id property="id" column="id" jdbcType="BIGINT"/>
-        <result property="name" column="name" jdbcType="VARCHAR"/>
-        <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
-        <result property="isParent" column="is_parent" jdbcType="BOOLEAN"/>
-        <result property="sort" column="sort" jdbcType="INTEGER"/>
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
+            <result property="isParent" column="is_parent" jdbcType="BOOLEAN"/>
+            <result property="sort" column="sort" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">

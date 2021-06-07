@@ -33,42 +33,26 @@
         <result property="valid" column="valid" jdbcType="BOOLEAN"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="lastUpdateTime" column="last_update_time" jdbcType="TIMESTAMP"/>
-        <association property="tbCategory1" javaType="com.wojiwo.goods.entity.TbCategory">
-            <result property="name" column="cname1" jdbcType="VARCHAR"/>
-        </association>
-        <association property="tbCategory2" javaType="com.wojiwo.goods.entity.TbCategory">
-            <result property="name" column="cname2" jdbcType="VARCHAR"/>
-        </association>
-        <association property="tbCategory3" javaType="com.wojiwo.goods.entity.TbCategory">
-            <result property="name" column="cname3" jdbcType="VARCHAR"/>
-        </association>
-        <association property="tbBrand" javaType="com.wojiwo.goods.entity.TbBrand">
-            <result property="name" column="brand_name" jdbcType="VARCHAR"/>
-        </association>
-        <association property="tbSpuDetail" javaType="com.wojiwo.goods.entity.TbSpuDetail">
-            <result property="description" column="description" jdbcType="VARCHAR"/>
-            <result property="genericSpec" column="generic_spec" jdbcType="VARCHAR"/>
-            <result property="specialSpec" column="special_spec" jdbcType="VARCHAR"/>
-            <result property="packingList" column="packing_list" jdbcType="VARCHAR"/>
-            <result property="afterService" column="after_service" jdbcType="VARCHAR"/>
-        </association>
+        <result property="categoryName1" column="cname1" jdbcType="VARCHAR"/>
+        <result property="categoryName2" column="cname2" jdbcType="VARCHAR"/>
+        <result property="categoryName3" column="cname3" jdbcType="VARCHAR"/>
+        <result property="brandName" column="brand_name" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Link_Column_List">
         s.id, s.title, s.sub_title,
+        s.cid1,s.cid2,s.cid2,s.cid3,s.brand_id,
         c1.name cname1, c2.name cname2,
         c3.name cname3, b.name brand_name,
         s.saleable, s.valid, s.create_time,
-        s.last_update_time,d.description,
-        d.generic_spec, d.special_spec,
-        d.packing_list, d.after_service
+        s.last_update_time
     </sql>
 
     <select id="linkSelectPage" resultMap="LinkResultMap">
         select
         <include refid="Link_Column_List"/>
         from tb_spu s left join tb_category c1 on s.cid1 = c1.id left join tb_category c2 on s.cid2 = c2.id left join
-        tb_category c3 on s.cid3 = c3.id left join tb_spu_detail d on s.id = d.spu_id left join tb_brand b on b.id =
-        s.brand_id
+        tb_category c3 on s.cid3 = c3.id
+        left join tb_brand b on b.id = s.brand_id
     </select>
 </mapper>

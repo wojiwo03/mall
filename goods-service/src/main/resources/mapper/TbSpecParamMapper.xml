@@ -17,7 +17,16 @@
 
     <sql id="Base_Column_List">
         id,cid,group_id,
-        name,‘numeric’,unit,
+        name,`numeric`,unit,
         generic,searching,segments
     </sql>
+    <select id="selectAllInIds" resultType="com.wojiwo.goods.entity.TbSpecParam">
+        select
+        <include refid="Base_Column_List"></include>
+        from tb_spec_param
+        where id in
+        <foreach  item="item" collection="list" index="index"  open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

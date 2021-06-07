@@ -1,7 +1,7 @@
 package com.wojiwo.goods.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.wojiwo.goods.entity.TbBrand;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  *

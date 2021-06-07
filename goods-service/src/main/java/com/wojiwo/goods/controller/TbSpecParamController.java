@@ -16,6 +16,6 @@ public class TbSpecParamController {
 
     @PostMapping(value = "/specParam/ids")
     public List<TbSpecParam> getByIds(@RequestBody List<Integer> ids) {
-        return tbSpecParamService.listByIds(ids);
+        return tbSpecParamService.myListById(ids);
     }
 }

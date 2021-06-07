@@ -5,10 +5,10 @@
 <mapper namespace="com.wojiwo.goods.mapper.TbBrandMapper">
 
     <resultMap id="BaseResultMap" type="com.wojiwo.goods.entity.TbBrand">
-        <id property="id" column="id" jdbcType="BIGINT"/>
-        <result property="name" column="name" jdbcType="VARCHAR"/>
-        <result property="image" column="image" jdbcType="VARCHAR"/>
-        <result property="letter" column="letter" jdbcType="CHAR"/>
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="image" column="image" jdbcType="VARCHAR"/>
+            <result property="letter" column="letter" jdbcType="CHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">

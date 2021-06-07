@@ -1,58 +1,50 @@
-package com.wojiwo.goods.entity;
+package com.wojiwo.search.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import java.io.Serializable;
 import java.util.Date;
 
-/**
- * spu表，该表描述的是一个抽象性的商品，比如 iphone8
- */
-@TableName(value = "tb_spu")
 @Data
-public class TbSpu implements Serializable {
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
+@Document(indexName = "tb_spu_info")
+public class TbSpuInfo {
     /**
      * spu id
      */
-    @TableId(type = IdType.AUTO)
+    @Id
     private Long id;
     /**
      * 标题
      */
+    @Field(type = FieldType.Text, analyzer = "ik_max_word",searchAnalyzer = "ik_max_word")
     private String title;
     /**
      * 子标题
      */
+    @Field(type = FieldType.Text, analyzer = "ik_max_word",searchAnalyzer = "ik_max_word")
     private String subTitle;
     /**
      * 1级类目id
      */
     private Long cid1;
-    @TableField(exist = false)
     private String categoryName1;
     /**
      * 2级类目id
      */
     private Long cid2;
-    @TableField(exist = false)
     private String categoryName2;
     /**
      * 3级类目id
      */
     private Long cid3;
-    @TableField(exist = false)
     private String categoryName3;
     /**
      * 商品所属品牌id
      */
     private Long brandId;
-    @TableField(exist = false)
     private String brandName;
     /**
      * 是否上架，0下架，1上架
