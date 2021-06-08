@@ -12,11 +12,3 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:7356/eureka/
-
-feign:
-  client:
-    config:
-      feignName:
-        connectTimeout: 5000
-        readTimeout: 5000
-        loggerLevel: full

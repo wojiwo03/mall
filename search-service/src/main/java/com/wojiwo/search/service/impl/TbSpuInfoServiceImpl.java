@@ -6,6 +6,10 @@ import com.wojiwo.search.mapper.TbSpuInfoMapper;
 import com.wojiwo.search.service.TbSpuInfoService;
 import com.wojiwo.search.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.aggregation.impl.AggregatedPageImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,5 +36,10 @@ public class TbSpuInfoServiceImpl implements TbSpuInfoService {
                 break;
             }
         }
+    }
+
+    @Override
+    public AggregatedPageImpl<TbSpuInfo> search(String q, int current, int size) {
+        return tbSpuInfoMapper.findTop200ByTitleOrSubTitle(q,q,PageRequest.of(current,size, Sort.by("id").ascending()));
     }
 }

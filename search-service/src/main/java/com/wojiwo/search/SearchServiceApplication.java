@@ -10,6 +10,6 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 @EnableElasticsearchRepositories(basePackages = "com.wojiwo.search.mapper")
 public class SearchServiceApplication {
     public static void main(String[] args) {
-        SpringApplication.run(SearchServiceApplication.class,args);
+        SpringApplication.run(SearchServiceApplication.class, args);
     }
 }
