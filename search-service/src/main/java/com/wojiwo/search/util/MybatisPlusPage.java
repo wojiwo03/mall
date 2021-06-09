@@ -5,6 +5,6 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class Page<T> {
+public class MybatisPlusPage<T> {
     private List<T> records;
 }
